@@ -153,6 +153,7 @@
             <img src="./images/icon_SPAnbi.png" alt="SPアンビー" class="character-icon" data-character="spanbi">
             <img src="./images/icon_Trigger.png" alt="トリガー" class="character-icon" data-character="trigger">
             <img src="./images/icon_Qianyuyouzhen.png" alt="悠真" class="character-icon" data-character="youzhen">
+            <img src="./images/icon_Xingjianya.png" alt="雅" class="character-icon" data-character="xingjianya">
         </div>
         
         <div class="character-info">
@@ -207,6 +208,12 @@
                 name: "悠真 (Qianyuyouzhen)",
                 jsonUrl: "./悠真.json",
                 atlasUrl: "./悠真.atlas",
+                autoPlay: true
+            },
+            xingjianya: {
+                name: "雅 (Xingjianya)",
+                jsonUrl: "./雅.json",
+                atlasUrl: "./雅.atlas",
                 autoPlay: true
             }
         };
@@ -264,7 +271,7 @@
                 };
                 
                 // 自動再生が必要なキャラクター用フラグを保存
-                const needsAutoPlay = (characterKey === 'trigger' || characterKey === 'youzhen');
+                const needsAutoPlay = (characterKey === 'trigger' || characterKey === 'youzhen' || characterKey === 'xingjianya');
                 
                 config.success = function(player) {
                     console.log(`${char.name} loaded successfully`);
