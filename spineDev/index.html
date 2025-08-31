@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spine Animation Viewer</title>
+    <script src="https://unpkg.com/@esotericsoftware/spine-player@4.2.*/dist/iife/spine-player.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@esotericsoftware/spine-player@4.2.*/dist/spine-player.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #252525;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .character-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .character-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            border: 3px solid rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            object-fit: cover;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .character-icon:hover {
+            transform: scale(1.1);
+            border-color: #fff;
+            box-shadow: 0 5px 20px rgba(255,255,255,0.4);
+        }
+        
+        .character-icon.active {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255,215,0,0.6);
+            transform: scale(1.15);
+        }
+        
+        .character-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .character-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .controls-info {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 15px;
+        }
+        
+        .viewer-container {
+            width: 800px;
+            height: 1080px;
+            margin: 0 auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.95);
+        }
+        
+        /* Spine Playerのcanvasを強制的にフルサイズにする */
+        #spine-player canvas {
+            width: 100% !important;
+            height: 100% !important;
+            object-fit: contain;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 1.2rem;
+            color: #666;
+        }
+        
+        .loading::after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 2px solid #ddd;
+            border-top: 2px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .character-icon {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .viewer-container {
+                width: 400px;
+                height: 540px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .character-name {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ZZZ Spine Viewer</h1>
+        
+        <div class="character-selector">
+            <img src="./images/icon_Youye.png" alt="柚叶" class="character-icon active" data-character="youye">
+            <img src="./images/icon_Alice.png" alt="爱丽丝" class="character-icon" data-character="alice">
+            <img src="./images/icon_Jufufu.png" alt="橘福福" class="character-icon" data-character="jufufu">
+            <img src="./images/icon_Yixuan.png" alt="儀玄" class="character-icon" data-character="yixuan">
+            <img src="./images/icon_SPAnbi.png" alt="SPアンビー" class="character-icon" data-character="spanbi">
+            <img src="./images/icon_Trigger.png" alt="トリガー" class="character-icon" data-character="trigger">
+        </div>
+        
+        <div class="character-info">
+            <div class="character-name" id="character-name">柚叶 (Youye)</div>
+        </div>
+        
+        <div class="viewer-container">
+            <div id="spine-player"></div>
+        </div>
+    </div>
+
+    <script>
+        // キャラクター設定
+        const characters = {
+            youye: {
+                name: "柚叶 (Youye)",
+                jsonUrl: "./柚叶.json",
+                atlasUrl: "./柚叶.atlas",
+                animation: "loop"
+            },
+            alice: {
+                name: "爱丽丝 (Alice)",
+                jsonUrl: "./爱丽丝.json",
+                atlasUrl: "./爱丽丝.atlas",
+                animation: "Loop"
+            },
+            jufufu: {
+                name: "橘福福 (Jufufu)",
+                jsonUrl: "./橘福福.json",
+                atlasUrl: "./橘福福.atlas",
+                animation: "loop"
+            },
+            yixuan: {
+                name: "儀玄 (Yixuan)",
+                jsonUrl: "./儀玄.json",
+                atlasUrl: "./儀玄.atlas",
+                animation: "idle"
+            },
+            spanbi: {
+                name: "SPアンビー (SP Anbi)",
+                jsonUrl: "./SPアンビー.json",
+                atlasUrl: "./SPアンビー.atlas",
+                animation: "loop"
+            },
+            trigger: {
+                name: "トリガー (Trigger)",
+                jsonUrl: "./トリガー.json",
+                atlasUrl: "./トリガー.atlas",
+                autoPlay: true
+            }
+        };
+
+        let currentPlayer = null;
+        let currentCharacter = "youye";
+
+
+        // キャラクター切り替え関数
+        function switchCharacter(characterKey) {
+            if (currentCharacter === characterKey) return;
+            
+            // 現在のプレイヤーを破棄
+            if (currentPlayer) {
+                currentPlayer.dispose();
+                currentPlayer = null;
+            }
+            
+            // ローディング表示
+            const container = document.getElementById('spine-player');
+            container.innerHTML = '<div class="loading">Loading...</div>';
+            
+            // アクティブアイコンを更新
+            document.querySelectorAll('.character-icon').forEach(icon => {
+                icon.classList.remove('active');
+            });
+            document.querySelector(`[data-character="${characterKey}"]`).classList.add('active');
+            
+            // キャラクター名を更新
+            document.getElementById('character-name').textContent = characters[characterKey].name;
+            
+            currentCharacter = characterKey;
+            
+            // 少し遅延を入れてから新しいプレイヤーを作成
+            setTimeout(() => {
+                loadCharacter(characterKey);
+            }, 300);
+        }
+
+        // キャラクター読み込み関数
+        function loadCharacter(characterKey) {
+            const char = characters[characterKey];
+            
+            try {
+                const config = {
+                    jsonUrl: char.jsonUrl,
+                    atlasUrl: char.atlasUrl,
+                    animation: char.animation,
+                    loop: true,
+                    showControls: true,
+                    backgroundColor: "#ffffff",
+                    alpha: true,
+                    defaultMix: 0.25,
+                    premultipliedAlpha: false,
+                };
+                
+                // トリガー用フラグを保存
+                const needsAutoPlay = (characterKey === 'trigger');
+                
+                config.success = function(player) {
+                    console.log(`${char.name} loaded successfully`);
+                    
+                    // ローディング表示を削除
+                        const container = document.getElementById('spine-player');
+                        const loadingElement = container.querySelector('.loading');
+                        if (loadingElement) {
+                            loadingElement.remove();
+                        }
+                        
+                        // Canvas要素のサイズを強制的に変更
+                        setTimeout(() => {
+                            const canvas = container.querySelector('canvas');
+                            if (canvas) {
+                                canvas.style.width = '800px';
+                                canvas.style.height = '1080px';
+                                canvas.width = 800;
+                                canvas.height = 1080;
+                                console.log("Canvas forced to 800x1080");
+                            }
+                        }, 100);
+                        
+                        
+                        
+                        
+                        // 物理エンジンの初期化
+                        if (player.skeleton.physicsConstraints && player.skeleton.physicsConstraints.length > 0) {
+                            console.log("Physics constraints found:", player.skeleton.physicsConstraints.length);
+                            for (let i = 0; i < player.skeleton.physicsConstraints.length; i++) {
+                                let constraint = player.skeleton.physicsConstraints[i];
+                                constraint.reset();
+                            }
+                        }
+                        
+                        // トリガーの場合、手動で再生開始
+                        if (needsAutoPlay) {
+                            setTimeout(() => {
+                                if (player && player.play) {
+                                    player.play();
+                                    console.log("Auto-play started for Trigger");
+                                }
+                            }, 500);
+                        }
+                        
+                        // アニメーション安定化
+                        if (player.animationState.tracks && player.animationState.tracks.length > 0) {
+                            player.animationState.update(0.1);
+                            player.animationState.apply(player.skeleton);
+                            player.skeleton.updateWorldTransform();
+                        }
+                };
+                
+                config.error = function(player, reason) {
+                    console.error(`${char.name} failed to load:`, reason);
+                    document.getElementById('spine-player').innerHTML = 
+                        '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #666; font-size: 1.1rem;">❌ Loading failed</div>';
+                };
+                
+                currentPlayer = new spine.SpinePlayer("spine-player", config);
+            } catch (error) {
+                console.error("Error creating player:", error);
+                document.getElementById('spine-player').innerHTML = 
+                    '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #666; font-size: 1.1rem;">❌ Error occurred</div>';
+            }
+        }
+
+        // イベントリスナー設定
+        document.addEventListener('DOMContentLoaded', function() {
+            // アイコンクリックイベント
+            document.querySelectorAll('.character-icon').forEach(icon => {
+                icon.addEventListener('click', function() {
+                    const character = this.getAttribute('data-character');
+                    switchCharacter(character);
+                });
+            });
+            
+            // 初期キャラクター読み込み
+            loadCharacter('youye');
+        });
+    </script>
+</body>
+</html>
