@@ -154,6 +154,8 @@
             <img src="./images/icon_Trigger.png" alt="トリガー" class="character-icon" data-character="trigger">
             <img src="./images/icon_Evelyn.png" alt="Evelyn" class="character-icon" data-character="evelyn">
             <img src="./images/icon_YaoJiayin.png" alt="Yao" class="character-icon" data-character="yao">
+            <img src="./images/icon_Vivian.png" alt="Vivian" class="character-icon" data-character="vivian">
+            <img src="./images/icon_Hugo.png" alt="Hugo" class="character-icon" data-character="hugo">
             <img src="./images/icon_Qianyuyouzhen.png" alt="悠真" class="character-icon" data-character="youzhen">
             <img src="./images/icon_Xingjianya.png" alt="雅" class="character-icon" data-character="xingjianya">
         </div>
@@ -204,31 +206,43 @@
                 name: "トリガー (Trigger)",
                 jsonUrl: "./トリガー.json",
                 atlasUrl: "./トリガー.atlas",
-                autoPlay: true
+                animation: "Loop"
             },
             evelyn: {
                 name: "Evelyn",
                 jsonUrl: "./Evelyn.json",
                 atlasUrl: "./Evelyn.atlas",
-                autoPlay: true
+                animation: "Loop"
             },
             yao: {
                 name: "Yao",
                 jsonUrl: "./Yao.json",
                 atlasUrl: "./Yao.atlas",
-                autoPlay: true
+                animation: "Loop"
+            },
+            vivian: {
+                name: "Vivian",
+                jsonUrl: "./Vivian.json",
+                atlasUrl: "./Vivian.atlas",
+                animation: "Loop"
+            },
+            hugo: {
+                name: "Hugo",
+                jsonUrl: "./hugo.json",
+                atlasUrl: "./Hugo.atlas",
+                animation: "loop"
             },
             youzhen: {
                 name: "悠真 (Qianyuyouzhen)",
                 jsonUrl: "./悠真.json",
                 atlasUrl: "./悠真.atlas",
-                autoPlay: true
+                animation: "Loop"
             },
             xingjianya: {
                 name: "雅 (Xingjianya)",
                 jsonUrl: "./雅.json",
                 atlasUrl: "./雅.atlas",
-                autoPlay: true
+                animation: "loop"
             }
         };
 
@@ -285,7 +299,7 @@
                 };
                 
                 // 自動再生が必要なキャラクター用フラグを保存
-                const needsAutoPlay = (characterKey === 'trigger' || characterKey === 'youzhen' || characterKey === 'xingjianya' || characterKey === 'evelyn' || characterKey === 'yao');
+                const needsAutoPlay = (characterKey === 'trigger' || characterKey === 'youzhen' || characterKey === 'xingjianya' || characterKey === 'evelyn');
                 
                 config.success = function(player) {
                     console.log(`${char.name} loaded successfully`);
