@@ -152,6 +152,8 @@
             <img src="./images/icon_Yixuan.png" alt="儀玄" class="character-icon" data-character="yixuan">
             <img src="./images/icon_SPAnbi.png" alt="SPアンビー" class="character-icon" data-character="spanbi">
             <img src="./images/icon_Trigger.png" alt="トリガー" class="character-icon" data-character="trigger">
+            <img src="./images/icon_Evelyn.png" alt="Evelyn" class="character-icon" data-character="evelyn">
+            <img src="./images/icon_YaoJiayin.png" alt="Yao" class="character-icon" data-character="yao">
             <img src="./images/icon_Qianyuyouzhen.png" alt="悠真" class="character-icon" data-character="youzhen">
             <img src="./images/icon_Xingjianya.png" alt="雅" class="character-icon" data-character="xingjianya">
         </div>
@@ -202,6 +204,18 @@
                 name: "トリガー (Trigger)",
                 jsonUrl: "./トリガー.json",
                 atlasUrl: "./トリガー.atlas",
+                autoPlay: true
+            },
+            evelyn: {
+                name: "Evelyn",
+                jsonUrl: "./Evelyn.json",
+                atlasUrl: "./Evelyn.atlas",
+                autoPlay: true
+            },
+            yao: {
+                name: "Yao",
+                jsonUrl: "./Yao.json",
+                atlasUrl: "./Yao.atlas",
                 autoPlay: true
             },
             youzhen: {
@@ -271,7 +285,7 @@
                 };
                 
                 // 自動再生が必要なキャラクター用フラグを保存
-                const needsAutoPlay = (characterKey === 'trigger' || characterKey === 'youzhen' || characterKey === 'xingjianya');
+                const needsAutoPlay = (characterKey === 'trigger' || characterKey === 'youzhen' || characterKey === 'xingjianya' || characterKey === 'evelyn' || characterKey === 'yao');
                 
                 config.success = function(player) {
                     console.log(`${char.name} loaded successfully`);
