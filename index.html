@@ -41,7 +41,7 @@
             width: 60px;
             height: 60px;
             border-radius: 10px;
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 1.5px solid rgba(255,255,255,0.3);
             cursor: pointer;
             transition: all 0.3s ease;
             object-fit: cover;
@@ -146,7 +146,9 @@
         <h1>ZZZ Spine Viewer</h1>
         
         <div class="character-selector">
-            <img src="./images/icon_Youye.png" alt="柚叶" class="character-icon active" data-character="youye">
+            <img src="./images/icon_Seed.png" alt="Seed" class="character-icon active" data-character="seed">
+            <img src="./images/icon_Aofeisi.png" alt="Aofeisi" class="character-icon" data-character="aofeisi">
+            <img src="./images/icon_Youye.png" alt="柚叶" class="character-icon" data-character="youye">
             <img src="./images/icon_Alice.png" alt="爱丽丝" class="character-icon" data-character="alice">
             <img src="./images/icon_Jufufu.png" alt="橘福福" class="character-icon" data-character="jufufu">
             <img src="./images/icon_Yixuan.png" alt="儀玄" class="character-icon" data-character="yixuan">
@@ -161,7 +163,7 @@
         </div>
         
         <div class="character-info">
-            <div class="character-name" id="character-name">柚叶 (Youye)</div>
+            <div class="character-name" id="character-name">Seed</div>
         </div>
         
         <div class="viewer-container">
@@ -243,11 +245,23 @@
                 jsonUrl: "./雅.json",
                 atlasUrl: "./雅.atlas",
                 animation: "loop"
+            },
+            aofeisi: {
+                name: "Aofeisi",
+                jsonUrl: "./Aofeisi.json",
+                atlasUrl: "./Aofeisi.atlas",
+                animation: "Loop"
+            },
+            seed: {
+                name: "Seed",
+                jsonUrl: "./seed.json",
+                atlasUrl: "./seed.atlas",
+                animation: "loop"
             }
         };
 
         let currentPlayer = null;
-        let currentCharacter = "youye";
+        let currentCharacter = "seed";
 
 
         // キャラクター切り替え関数
@@ -378,7 +392,7 @@
             });
             
             // 初期キャラクター読み込み
-            loadCharacter('youye');
+            loadCharacter('seed');
         });
     </script>
 </body>
