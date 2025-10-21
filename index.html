@@ -146,7 +146,9 @@
         <h1>ZZZ Spine Viewer</h1>
         
         <div class="character-selector">
-            <img src="./images/icon_Seed.png" alt="Seed" class="character-icon active" data-character="seed">
+            <img src="./images/icon_Lucia.png" alt="リシュア" class="character-icon active" data-character="lucia">
+            <img src="./images/icon_Yidhari.png" alt="イドリー" class="character-icon" data-character="yidhari">
+            <img src="./images/icon_Seed.png" alt="Seed" class="character-icon" data-character="seed">
             <img src="./images/icon_Aofeisi.png" alt="Aofeisi" class="character-icon" data-character="aofeisi">
             <img src="./images/icon_Youye.png" alt="柚叶" class="character-icon" data-character="youye">
             <img src="./images/icon_Alice.png" alt="爱丽丝" class="character-icon" data-character="alice">
@@ -163,7 +165,7 @@
         </div>
         
         <div class="character-info">
-            <div class="character-name" id="character-name">Seed</div>
+            <div class="character-name" id="character-name">リシュア (Lucia)</div>
         </div>
         
         <div class="viewer-container">
@@ -257,11 +259,23 @@
                 jsonUrl: "./seed.json",
                 atlasUrl: "./seed.atlas",
                 animation: "loop"
+            },
+            lucia: {
+                name: "リシュア (Lucia)",
+                jsonUrl: "./リシュア.json",
+                atlasUrl: "./リシュア.atlas",
+                animation: "loop"
+            },
+            yidhari: {
+                name: "イドリー (Yidhari)",
+                jsonUrl: "./イドリー.json",
+                atlasUrl: "./イドリー.atlas",
+                animation: "idle"
             }
         };
 
         let currentPlayer = null;
-        let currentCharacter = "seed";
+        let currentCharacter = "lucia";
 
 
         // キャラクター切り替え関数
@@ -392,7 +406,7 @@
             });
             
             // 初期キャラクター読み込み
-            loadCharacter('seed');
+            loadCharacter('lucia');
         });
     </script>
 </body>
