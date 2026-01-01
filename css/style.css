@@ -130,3 +130,51 @@ h1 {
         font-size: 1.4rem;
     }
 }
+
+/* Controls UI */
+.controls-ui {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.toggle-control {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background: rgba(255,255,255,0.1);
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.toggle-control:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.toggle-control input {
+    margin-right: 8px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Transparent Mode */
+body.transparent-mode {
+    background: #333; /* Darker background for contrast, or let user decide. Keeping it dark grey for now but different from default */
+    background-image: 
+        linear-gradient(45deg, #2a2a2a 25%, transparent 25%), 
+        linear-gradient(-45deg, #2a2a2a 25%, transparent 25%), 
+        linear-gradient(45deg, transparent 75%, #2a2a2a 75%), 
+        linear-gradient(-45deg, transparent 75%, #2a2a2a 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+body.transparent-mode .viewer-container {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}

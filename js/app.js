@@ -145,9 +145,18 @@ function switchCharacter(characterKey) {
     }, 300);
 }
 
+// 設定状態を取得
+function getPlayerConfig() {
+    return {
+        showBones: document.getElementById('toggle-bones')?.checked || false,
+        transparent: document.getElementById('toggle-transparent')?.checked || false
+    };
+}
+
 // キャラクター読み込み関数
 function loadCharacter(characterKey) {
     const char = characters[characterKey];
+    const configState = getPlayerConfig();
 
     try {
         const config = {
@@ -156,8 +165,11 @@ function loadCharacter(characterKey) {
             animation: char.animation,
             loop: true,
             showControls: true,
-            backgroundColor: "#ffffff",
+            backgroundColor: "#00000000",
             alpha: true,
+            debug: {
+                bones: configState.showBones
+            },
             defaultMix: 0.25,
             premultipliedAlpha: false,
         };
@@ -243,4 +255,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 初期キャラクター読み込み
     loadCharacter('lucia');
+
+    // UIコントロールのイベントリスナー
+    const transparentToggle = document.getElementById('toggle-transparent');
+    const bonesToggle = document.getElementById('toggle-bones');
+
+    if (transparentToggle) {
+        transparentToggle.addEventListener('change', function () {
+            if (this.checked) {
+                document.body.classList.add('transparent-mode');
+            } else {
+                document.body.classList.remove('transparent-mode');
+            }
+        });
+    }
+
+    if (bonesToggle) {
+        bonesToggle.addEventListener('change', function () {
+            // 現在のキャラクターをリロードしてボーン表示設定を反映
+            if (currentCharacter) {
+                // switchCharacterを呼ぶとちらつくので、直接リロードするか、
+                // loadCharacterを呼ぶ前にdisposeする
+                if (currentPlayer) {
+                    currentPlayer.dispose();
+                    currentPlayer = null;
+                }
+                loadCharacter(currentCharacter);
+            }
+        });
+    }
 });
