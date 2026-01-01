@@ -1,0 +1,132 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #252525;
+    min-height: 100vh;
+    color: white;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    color: white;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.character-selector {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.character-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    object-fit: cover;
+    background: rgba(255,255,255,0.1);
+}
+
+.character-icon:hover {
+    transform: scale(1.1);
+    border-color: #fff;
+    box-shadow: 0 5px 20px rgba(255,255,255,0.4);
+}
+
+.character-icon.active {
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(255,215,0,0.6);
+    transform: scale(1.15);
+}
+
+.character-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.character-name {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.controls-info {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 15px;
+}
+
+.viewer-container {
+    width: 800px;
+    height: 1080px;
+    margin: 0 auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.95);
+}
+
+/* Spine Playerのcanvasを強制的にフルサイズにする */
+#spine-player canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.loading::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    border: 2px solid #ddd;
+    border-top: 2px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .character-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .viewer-container {
+        width: 400px;
+        height: 540px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .character-name {
+        font-size: 1.4rem;
+    }
+}
