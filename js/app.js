@@ -95,6 +95,18 @@ const characters = {
         jsonUrl: "assets/spine/yidhari.json",
         atlasUrl: "assets/spine/yidhari.atlas",
         animation: "idle"
+    },
+    zhao: {
+        name: "Zhao",
+        jsonUrl: "assets/spine/Zhao.json",
+        atlasUrl: "assets/spine/Zhao.atlas",
+        animation: "Loop"
+    },
+    yoshunkou: {
+        name: "YoShunkou",
+        jsonUrl: "assets/spine/YoShunkou.json",
+        atlasUrl: "assets/spine/YoShunkou.atlas",
+        animation: "Loop"
     }
 };
 
@@ -105,28 +117,28 @@ let currentCharacter = "lucia";
 // キャラクター切り替え関数
 function switchCharacter(characterKey) {
     if (currentCharacter === characterKey) return;
-    
+
     // 現在のプレイヤーを破棄
     if (currentPlayer) {
         currentPlayer.dispose();
         currentPlayer = null;
     }
-    
+
     // ローディング表示
     const container = document.getElementById('spine-player');
     container.innerHTML = '<div class="loading">Loading...</div>';
-    
+
     // アクティブアイコンを更新
     document.querySelectorAll('.character-icon').forEach(icon => {
         icon.classList.remove('active');
     });
     document.querySelector(`[data-character="${characterKey}"]`).classList.add('active');
-    
+
     // キャラクター名を更新
     document.getElementById('character-name').textContent = characters[characterKey].name;
-    
+
     currentCharacter = characterKey;
-    
+
     // 少し遅延を入れてから新しいプレイヤーを作成
     setTimeout(() => {
         loadCharacter(characterKey);
@@ -136,7 +148,7 @@ function switchCharacter(characterKey) {
 // キャラクター読み込み関数
 function loadCharacter(characterKey) {
     const char = characters[characterKey];
-    
+
     try {
         const config = {
             jsonUrl: char.jsonUrl,
@@ -149,86 +161,86 @@ function loadCharacter(characterKey) {
             defaultMix: 0.25,
             premultipliedAlpha: false,
         };
-        
+
         // 自動再生が必要なキャラクター用フラグを保存
         const needsAutoPlay = (characterKey === 'trigger' || characterKey === 'youzhen' || characterKey === 'xingjianya' || characterKey === 'evelyn');
-        
-        config.success = function(player) {
+
+        config.success = function (player) {
             console.log(`${char.name} loaded successfully`);
-            
+
             // ローディング表示を削除
-                const container = document.getElementById('spine-player');
-                const loadingElement = container.querySelector('.loading');
-                if (loadingElement) {
-                    loadingElement.remove();
+            const container = document.getElementById('spine-player');
+            const loadingElement = container.querySelector('.loading');
+            if (loadingElement) {
+                loadingElement.remove();
+            }
+
+            // Canvas要素のサイズを強制的に変更
+            setTimeout(() => {
+                const canvas = container.querySelector('canvas');
+                if (canvas) {
+                    canvas.style.width = '800px';
+                    canvas.style.height = '1080px';
+                    canvas.width = 800;
+                    canvas.height = 1080;
+                    console.log("Canvas forced to 800x1080");
                 }
-                
-                // Canvas要素のサイズを強制的に変更
+            }, 100);
+
+
+
+
+            // 物理エンジンの初期化
+            if (player.skeleton.physicsConstraints && player.skeleton.physicsConstraints.length > 0) {
+                console.log("Physics constraints found:", player.skeleton.physicsConstraints.length);
+                for (let i = 0; i < player.skeleton.physicsConstraints.length; i++) {
+                    let constraint = player.skeleton.physicsConstraints[i];
+                    constraint.reset();
+                }
+            }
+
+            // トリガーの場合、手動で再生開始
+            if (needsAutoPlay) {
                 setTimeout(() => {
-                    const canvas = container.querySelector('canvas');
-                    if (canvas) {
-                        canvas.style.width = '800px';
-                        canvas.style.height = '1080px';
-                        canvas.width = 800;
-                        canvas.height = 1080;
-                        console.log("Canvas forced to 800x1080");
+                    if (player && player.play) {
+                        player.play();
+                        console.log("Auto-play started for Trigger");
                     }
-                }, 100);
-                
-                
-                
-                
-                // 物理エンジンの初期化
-                if (player.skeleton.physicsConstraints && player.skeleton.physicsConstraints.length > 0) {
-                    console.log("Physics constraints found:", player.skeleton.physicsConstraints.length);
-                    for (let i = 0; i < player.skeleton.physicsConstraints.length; i++) {
-                        let constraint = player.skeleton.physicsConstraints[i];
-                        constraint.reset();
-                    }
-                }
-                
-                // トリガーの場合、手動で再生開始
-                if (needsAutoPlay) {
-                    setTimeout(() => {
-                        if (player && player.play) {
-                            player.play();
-                            console.log("Auto-play started for Trigger");
-                        }
-                    }, 500);
-                }
-                
-                // アニメーション安定化
-                if (player.animationState.tracks && player.animationState.tracks.length > 0) {
-                    player.animationState.update(0.1);
-                    player.animationState.apply(player.skeleton);
-                    player.skeleton.updateWorldTransform();
-                }
+                }, 500);
+            }
+
+            // アニメーション安定化
+            if (player.animationState.tracks && player.animationState.tracks.length > 0) {
+                player.animationState.update(0.1);
+                player.animationState.apply(player.skeleton);
+                player.skeleton.updateWorldTransform();
+            }
         };
-        
-        config.error = function(player, reason) {
+
+        config.error = function (player, reason) {
             console.error(`${char.name} failed to load:`, reason);
-            document.getElementById('spine-player').innerHTML = 
+            document.getElementById('spine-player').innerHTML =
                 '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #666; font-size: 1.1rem;">❌ Loading failed</div>';
         };
-        
+
         currentPlayer = new spine.SpinePlayer("spine-player", config);
     } catch (error) {
         console.error("Error creating player:", error);
-        document.getElementById('spine-player').innerHTML = 
+        document.getElementById('spine-player').innerHTML =
             '<div style="display: flex; justify-content: center; align-items: center; height: 100%; color: #666; font-size: 1.1rem;">❌ Error occurred</div>';
     }
 }
 
 // イベントリスナー設定
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // アイコンクリックイベント
     document.querySelectorAll('.character-icon').forEach(icon => {
-        icon.addEventListener('click', function() {
+        icon.addEventListener('click', function () {
             const character = this.getAttribute('data-character');
             switchCharacter(character);
         });
     });
-    
+
     // 初期キャラクター読み込み
     loadCharacter('lucia');
 });
