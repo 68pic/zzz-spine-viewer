@@ -12,6 +12,18 @@ const characters = {
         atlasUrl: "assets/spine/Zhao.atlas",
         animation: "Loop"
     },
+    dialyn: {
+        name: "Dialyn",
+        jsonUrl: "assets/spine/Dialyn.json",
+        atlasUrl: "assets/spine/Dialyn.atlas",
+        animation: "loop"
+    },
+    banyue: {
+        name: "Banyue",
+        jsonUrl: "assets/spine/Banyue.json",
+        atlasUrl: "assets/spine/Banyue.atlas",
+        animation: "Loop"
+    },
     lucia: {
         name: "リシュア (Lucia)",
         jsonUrl: "assets/spine/リシュア.json",
@@ -172,7 +184,9 @@ async function loadCharacterData() {
                         (key === 'yixuan' && jaName.includes('儀玄')) ||
                         (key === 'spanbi' && jaName.includes('アンビー')) ||
                         (key === 'xingjianya' && jaName.includes('雅')) ||
-                        (key === 'zhao' && jaName === 'Zhao') || // Placeholder if not in CSV? Zhao isn't in CSV list prominently?
+                        (key === 'zhao' && jaName === '照') ||
+                        (key === 'banyue' && enName.includes('Banyue')) ||
+                        (key === 'dialyn' && enName.includes('Dialyn')) ||
                         (keyNorm === enNameNorm) ||
                         (enNameNorm.includes(keyNorm))
                     ) {
@@ -457,6 +471,10 @@ function switchCharacter(characterKey) {
 
 // キャラクター読み込み関数
 function loadCharacter(characterKey) {
+    console.log(`=== Loading character: ${characterKey} ===`);
+    console.log(`JSON: ${characters[characterKey]?.jsonUrl}`);
+    console.log(`Atlas: ${characters[characterKey]?.atlasUrl}`);
+
     // 新しいアプリケーションインスタンスを作成
     currentApp = new CharacterApp(characterKey);
 
@@ -500,11 +518,23 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function updateNameDisplay(characterKey) {
+    console.log(`updateNameDisplay called with: ${characterKey}`);
+    console.log(`characters object keys:`, Object.keys(characters));
+
     const container = document.getElementById('character-name-container');
     if (!container) return;
 
     const data = characterDataMap.get(characterKey);
     const charInfo = characters[characterKey];
+
+    console.log(`charInfo for ${characterKey}:`, charInfo);
+
+    // charInfoが存在しない場合のエラーハンドリング
+    if (!charInfo) {
+        console.error(`Character not found: ${characterKey}`);
+        console.error(`Available characters:`, Object.keys(characters));
+        return;
+    }
 
     const jaEl = container.querySelector('.name-line.ja');
     const enEl = container.querySelector('.name-line.en');
