@@ -177,12 +177,13 @@ async function loadCharacterData() {
                     // Specific mapping fixes based on known data
                     if (
                         (key === 'yoshunkou' && jaName.includes('葉瞬光')) ||
+                        (key === 'youzhen' && jaName.includes('浅羽悠真')) ||
                         (key === 'lucia' && enName.includes('Lucia')) ||
                         (key === 'yidhari' && enName.includes('Yidhari')) ||
                         (key === 'aofeisi' && enName.includes('Orphie')) ||
                         (key === 'youye' && jaName.includes('柚葉')) ||
                         (key === 'jufufu' && jaName.includes('橘福福')) ||
-                        (key === 'yixuan' && jaName.includes('儀玄')) ||
+                        (key === 'yixuan' && (jaName.includes('イーシェン') || enName.includes('Yixuan'))) ||
                         (key === 'spanbi' && jaName.includes('アンビー')) ||
                         (key === 'xingjianya' && jaName.includes('雅')) ||
                         (key === 'zhao' && jaName === '照') ||
