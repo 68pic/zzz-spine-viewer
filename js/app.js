@@ -201,8 +201,6 @@ async function loadCharacterData() {
         // Manually patch missing ones or specific overrides if heuristics fail
         // E.g., handling 'Zhao' if not found, or 'Seed'
 
-        console.log("Character Data Loaded:", characterDataMap);
-
         // Update initial display
         updateNameDisplay(currentCharacter);
 
@@ -286,8 +284,6 @@ class CharacterApp {
             this.showBones = checkbox.checked;
         }
 
-        console.log(`${this.character.name} loaded successfully!`);
-
         // ローディング表示を削除
         const loadingDiv = document.getElementById('loading');
         if (loadingDiv) {
@@ -307,21 +303,11 @@ class CharacterApp {
         const size = new spine.Vector2();
         this.skeleton.getBounds(offset, size);
 
-        console.log('=== Zoom Experiment ===');
-        console.log(`Browser size (px): ${browserWidth} x ${browserHeight}`);
-        console.log(`Canvas height (px): ${canvasHeight}`);
-        console.log(`Character height (world units): ${size.y.toFixed(1)}`);
-        console.log(`Default zoom: ${camera.zoom}`);
-
         // 計算：キャラクターの高さをブラウザの高さに合わせる
         // zoom = character_height / browser_height
         // 係数で調整可能（小さくするほどキャラクターが大きく表示される）
         const zoomFactor = 0.425;  // 調整用（0.425 = 2倍スケール）
         const calculatedZoom = (size.y / browserHeight) * zoomFactor;
-
-        console.log(`Base zoom: ${(size.y / browserHeight).toFixed(3)}`);
-        console.log(`Zoom factor: ${zoomFactor}`);
-        console.log(`Final zoom: ${calculatedZoom.toFixed(3)}`);
 
         // カメラの位置を設定
         const boundingCenterX = offset.x + size.x / 2;
@@ -331,10 +317,6 @@ class CharacterApp {
         camera.position.x = boundingCenterX;
         camera.position.y = targetY;
         camera.zoom = calculatedZoom;
-
-        console.log(`Camera position: (${camera.position.x.toFixed(1)}, ${camera.position.y.toFixed(1)})`);
-        console.log(`Target Y (3/5 from bottom): ${targetY.toFixed(1)}`);
-        console.log('=======================');
     }
 
     adjustInitialCameraView(canvas) {
@@ -346,11 +328,6 @@ class CharacterApp {
         const camera = canvas.renderer.camera;
         const canvasWidth = canvas.htmlCanvas.width;
         const canvasHeight = canvas.htmlCanvas.height;
-
-        // デバッグ情報
-        console.log('=== Initial Camera Setup ===');
-        console.log(`Canvas: ${canvasWidth} x ${canvasHeight}`);
-        console.log(`Skeleton bounds - Offset: (${offset.x.toFixed(1)}, ${offset.y.toFixed(1)}), Size: (${size.x.toFixed(1)}, ${size.y.toFixed(1)})`);
 
         // 描画範囲の重要な座標
         const boundingTop = offset.y + size.y;      // 境界ボックスの上端
@@ -364,10 +341,6 @@ class CharacterApp {
         // カメラのY位置は描画範囲の中央
         camera.position.y = boundingCenter;
         // zoomはデフォルトのまま（触らない）
-
-        console.log(`Camera set - Position: (${camera.position.x.toFixed(1)}, ${camera.position.y.toFixed(1)}), Zoom: ${camera.zoom.toFixed(3)} (default)`);
-        console.log(`Character bounds - Height: ${size.y.toFixed(1)}, Canvas height: ${canvasHeight}`);
-        console.log('============================');
     }
 
     update(canvas, delta) {
@@ -432,8 +405,6 @@ class CharacterApp {
 function switchCharacter(characterKey) {
     if (currentCharacter === characterKey) return;
 
-    console.log(`Switching to ${characterKey}...`);
-
     // ローディング表示
     const loadingDiv = document.getElementById('loading');
     if (loadingDiv) {
@@ -473,10 +444,6 @@ function switchCharacter(characterKey) {
 
 // キャラクター読み込み関数
 function loadCharacter(characterKey) {
-    console.log(`=== Loading character: ${characterKey} ===`);
-    console.log(`JSON: ${characters[characterKey]?.jsonUrl}`);
-    console.log(`Atlas: ${characters[characterKey]?.atlasUrl}`);
-
     // 新しいアプリケーションインスタンスを作成
     currentApp = new CharacterApp(characterKey);
 
@@ -520,16 +487,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function updateNameDisplay(characterKey) {
-    console.log(`updateNameDisplay called with: ${characterKey}`);
-    console.log(`characters object keys:`, Object.keys(characters));
-
     const container = document.getElementById('character-name-container');
     if (!container) return;
 
     const data = characterDataMap.get(characterKey);
     const charInfo = characters[characterKey];
-
-    console.log(`charInfo for ${characterKey}:`, charInfo);
 
     // charInfoが存在しない場合のエラーハンドリング
     if (!charInfo) {
