@@ -176,6 +176,7 @@ async function loadCharacterData() {
 
                     // Specific mapping fixes based on known data
                     if (
+                        (key === 'yoshunkou' && jaName.includes('葉瞬光')) ||
                         (key === 'lucia' && enName.includes('Lucia')) ||
                         (key === 'yidhari' && enName.includes('Yidhari')) ||
                         (key === 'aofeisi' && enName.includes('Orphie')) ||
