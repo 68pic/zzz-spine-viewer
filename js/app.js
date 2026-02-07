@@ -119,6 +119,18 @@ const characters = {
         jsonUrl: "assets/spine/雅.json",
         atlasUrl: "assets/spine/雅.atlas",
         animation: "loop"
+    },
+    chinatsu: {
+        name: "千夏 (Chinatsu)",
+        jsonUrl: "assets/spine/Chinatsu.json",
+        atlasUrl: "assets/spine/Chinatsu.atlas",
+        animation: "idle"
+    },
+    aria: {
+        name: "爱芮 (Aria)",
+        jsonUrl: "assets/spine/Aria.json",
+        atlasUrl: "assets/spine/Aria.atlas",
+        animation: "loop3"
     }
 };
 
@@ -186,6 +198,7 @@ async function loadCharacterData() {
                         (key === 'yixuan' && (jaName.includes('イーシェン') || enName.includes('Yixuan'))) ||
                         (key === 'spanbi' && jaName.includes('アンビー')) ||
                         (key === 'xingjianya' && jaName.includes('雅')) ||
+                        (key === 'chinatsu' && jaName.includes('千夏')) ||
                         (key === 'zhao' && jaName === '照') ||
                         (key === 'banyue' && enName.includes('Banyue')) ||
                         (key === 'dialyn' && enName.includes('Dialyn')) ||
